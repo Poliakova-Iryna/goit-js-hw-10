@@ -6,10 +6,13 @@ document.querySelector('.form').addEventListener('submit', function(event) {
 
     const inputDelay = document.getElementsByName("delay")[0];
     const delay = Number(inputDelay.value);
+    
+  
+    const selectedState = document.querySelector('input[name="state"]:checked').value;
 
     const promise = new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (Math.random() > 0.5) {
+            if (selectedState === "fulfilled") {
                 resolve(delay);
             } else {
                 reject(delay);
@@ -18,18 +21,18 @@ document.querySelector('.form').addEventListener('submit', function(event) {
     });
 
     promise
-      .then(delay => {
-        iziToast.success({
-            title: 'Success',
-            message: `✅ Fulfilled promise in ${delay}ms`,
-            position: 'topRight'
+        .then(delay => {
+            iziToast.success({
+                title: 'Success',
+                message: `✅ Fulfilled promise in ${delay}ms`,
+                position: 'topRight'
+            });
+        })
+        .catch(delay => {
+            iziToast.error({
+                title: 'Error',
+                message: `❌ Rejected promise in ${delay}ms`,
+                position: 'topRight'
+            });
         });
-      })
-      .catch(delay => {
-        iziToast.error({
-            title: 'Error',
-            message: `❌ Rejected promise in ${delay}ms`,
-            position: 'topRight'
-        });
-    });
 });
